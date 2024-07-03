@@ -9,15 +9,15 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
     apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y gnupg \
+    && apt-get install -y gnupg=2.2.27-3ubuntu2.1 \
     && curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor \
-    && echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-7.0.list \
+    && echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-7.0.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        binutils \
-        libcap2 \
-        logrotate \
-        mongodb-org \
+        binutils=2.38-4ubuntu2.6 \
+        libcap2=1:2.44-1ubuntu0.22.04.1 \
+        logrotate=3.19.0-1ubuntu1.1 \
+        mongodb-org=7.0.12 \
         openjdk-17-jre-headless=17* \
     \
     && curl -J -L -o /tmp/unifi.deb \
