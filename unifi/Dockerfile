@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/ubuntu-base:8.2.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/ubuntu-base:9.0.5
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -7,13 +7,15 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
 RUN \
-    apt-get update \
+    curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor \
+    && echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-7.0.list \
+    && apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-        binutils=2.34-6ubuntu1.9 \
-        libcap2=1:2.32-1ubuntu0.1 \
-        logrotate=3.14.0-4ubuntu3 \
-        mongodb-server=1:3.6.9+really3.6.8+90~g8e540c0b6d-0ubuntu5.3 \
+        binutils \
+        libcap2 \
+        logrotate \
+        mongodb-org \
         openjdk-17-jre-headless=17* \
     \
     && curl -J -L -o /tmp/unifi.deb \
